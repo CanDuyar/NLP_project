@@ -341,6 +341,37 @@ def get_marker_summary() -> str:
     return "\n".join(lines)
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+# 4.  Marker injection for Stage 2 (RAG-style context for the LLM)
+#     Stage 1 turns these markers into numeric ML features. Stage 2 instead
+#     hands a short summary of them straight to the language model as part
+#     of its input, which is the same "retrieve relevant knowledge, then let
+#     the generator use it" idea the assignment's RAG diagram describes -
+#     here the "document store" is just the marker lexicon above.
+# ══════════════════════════════════════════════════════════════════════════════
+
+def compute_marker_counts(text: str) -> Dict[str, int]:
+    """Count how often each marker category from LINGUISTIC_MARKERS shows up."""
+    lower = text.lower()
+    return {
+        category: sum(lower.count(phrase) for phrase in phrases)
+        for category, phrases in LINGUISTIC_MARKERS.items()
+    }
+
+
+def marker_feature_string(text: str) -> str:
+    """
+    Compact tag summarising which marker categories fired for this text,
+    meant to be prepended to the raw text before it goes into the model.
+    Only non-zero categories are listed so the tag stays short.
+    """
+    counts = compute_marker_counts(text)
+    hits = [f"{cat}:{n}" for cat, n in counts.items() if n > 0]
+    if not hits:
+        return "[kb] none"
+    return "[kb] " + " ".join(hits)
+
+
 # ── Persist KB to JSON for reference ─────────────────────────────────────────
 
 def save_knowledge_base():

@@ -36,9 +36,10 @@ def main():
     parser = argparse.ArgumentParser(
         description="NLP Project — Fact vs Opinion Classifier (Stage 1 + Stage 2)"
     )
-    parser.add_argument("--data",  type=str, help="Single labelled CSV (auto-split 80/20)")
-    parser.add_argument("--train", type=str, help="Training CSV (Stage 1)")
-    parser.add_argument("--test",  type=str, help="Test CSV (both stages)")
+    parser.add_argument("--data",   type=str, help="Single labelled CSV (auto-split 80/20)")
+    parser.add_argument("--train",  type=str, help="Training CSV (both stages)")
+    parser.add_argument("--test",   type=str, help="Test CSV (both stages)")
+    parser.add_argument("--epochs", type=int, default=4, help="Stage 2 fine-tuning epochs")
 
     args = parser.parse_args()
 
@@ -59,7 +60,9 @@ def main():
     logger.info("STAGE 2 – LLM-Based Classification")
     logger.info("=" * 60)
     run_stage2(
+        train_path=train_path,
         test_path=test_path,
+        epochs=args.epochs,
     )
 
     logger.info("=" * 60)
