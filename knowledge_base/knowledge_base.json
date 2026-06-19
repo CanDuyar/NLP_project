@@ -1,0 +1,185 @@
+{
+  "few_shot_examples": [
+    {
+      "text": "The Amazon rainforest covers approximately 5.5 million square kilometres and is home to around 10 percent of all species on Earth.",
+      "label": "Fact",
+      "rationale": "This sentence presents two quantifiable, verifiable measurements (area in km² and biodiversity percentage). It uses precise numerical data without hedging, subjective evaluation, or first-person stance. Both figures can be independently verified against scientific sources."
+    },
+    {
+      "text": "According to the World Health Organization, approximately 2 billion people lack access to safe drinking water.",
+      "label": "Fact",
+      "rationale": "Attributed to a recognised authority (WHO) and backed by a specific statistic. 'According to' is a classic reporting phrase that signals an external, verifiable source rather than personal opinion."
+    },
+    {
+      "text": "The human genome contains approximately 3 billion base pairs and encodes around 20,000 protein-coding genes.",
+      "label": "Fact",
+      "rationale": "Contains concrete scientific measurements with no subjective or evaluative language. The information is established scientific consensus documented in peer-reviewed literature."
+    },
+    {
+      "text": "Germany reunified on 3 October 1990 after the fall of the Berlin Wall in 1989.",
+      "label": "Fact",
+      "rationale": "States a historical event with a precise date. Historical facts can be verified against primary sources and encyclopaedic references. No opinion markers or hedging are present."
+    },
+    {
+      "text": "The unemployment rate in the United States fell to 3.4 percent in January 2023, the lowest since 1969.",
+      "label": "Fact",
+      "rationale": "Cites a government-published economic statistic with a specific date and comparative context. Uses objective data rather than personal assessment of the economy's health."
+    },
+    {
+      "text": "The Great Barrier Reef stretches over 2,300 kilometres along the coast of Queensland, Australia.",
+      "label": "Fact",
+      "rationale": "Provides a geographic measurement (length and location) that is objectively verifiable. No personal stance, evaluative adjective, or uncertainty marker is present."
+    },
+    {
+      "text": "Researchers at MIT developed an algorithm capable of detecting certain cancers from blood samples with 95 percent accuracy.",
+      "label": "Fact",
+      "rationale": "Reports a research finding attributed to a specific institution with a quantified performance metric. Research results are verifiable through the published study."
+    },
+    {
+      "text": "The French Revolution began in 1789 and led to the abolition of the monarchy and the rise of Napoleon Bonaparte.",
+      "label": "Fact",
+      "rationale": "Describes historical events with documented dates and consequences. Both the start year and the political outcomes are part of the established historical record."
+    },
+    {
+      "text": "I believe the government's handling of the economic crisis was nothing short of catastrophic.",
+      "label": "Opinion",
+      "rationale": "Opens with 'I believe', a classic first-person epistemic marker. The superlative evaluation ('nothing short of catastrophic') is inherently subjective and emotive rather than data-backed. The same policy could be judged very differently by another observer."
+    },
+    {
+      "text": "In my view, electric vehicles are far superior to traditional combustion engine cars in every meaningful way.",
+      "label": "Opinion",
+      "rationale": "'In my view' immediately signals a personal perspective. 'Far superior … in every meaningful way' is an absolute evaluative claim that cannot be uniformly verified — it depends on criteria chosen by the author."
+    },
+    {
+      "text": "This new regulation seems like an overreach that will likely stifle innovation and damage the economy.",
+      "label": "Opinion",
+      "rationale": "'Seems like' and 'will likely' are hedging expressions indicating prediction rather than established fact. 'Overreach' is a subjective political judgement, and the economic impact is speculative."
+    },
+    {
+      "text": "Social media has arguably done more to divide society than to connect it.",
+      "label": "Opinion",
+      "rationale": "'Arguably' is a classic hedge that signals the author's awareness that their claim is contestable. The comparison is a value judgement that depends on how 'divide' and 'connect' are measured and weighted."
+    },
+    {
+      "text": "The film is a stunning visual achievement, though its narrative is disappointingly shallow.",
+      "label": "Opinion",
+      "rationale": "Evaluative adjectives ('stunning', 'disappointingly shallow') represent aesthetic judgements that vary between critics. Such assessments are inherently subjective and cannot be objectively verified."
+    },
+    {
+      "text": "Perhaps the most troubling aspect of modern politics is the apparent decline in civil discourse.",
+      "label": "Opinion",
+      "rationale": "'Perhaps' signals uncertainty and subjective interpretation. 'Most troubling' is an evaluative superlative. 'Apparent decline' combines a hedging word with a value-loaded description that different people may assess very differently."
+    },
+    {
+      "text": "The city should invest heavily in green infrastructure rather than continuing to subsidise fossil fuels.",
+      "label": "Opinion",
+      "rationale": "The modal 'should' expresses a normative prescription — the author's view of what ought to be done — rather than reporting what is the case. Policy recommendations are inherently opinion-based."
+    },
+    {
+      "text": "Many experts believe the central bank made a serious error by raising interest rates so aggressively.",
+      "label": "Opinion",
+      "rationale": "Even attributed to 'many experts', the core claim ('serious error') is an evaluative judgement. 'Believe' signals subjective assessment. Other equally qualified experts hold the opposite view."
+    }
+  ],
+  "linguistic_markers": {
+    "opinion_strong": [
+      "i think",
+      "i believe",
+      "i feel",
+      "in my opinion",
+      "in my view",
+      "it is my conviction",
+      "i am convinced",
+      "personally"
+    ],
+    "opinion_hedge": [
+      "perhaps",
+      "possibly",
+      "probably",
+      "arguably",
+      "seemingly",
+      "apparently",
+      "presumably",
+      "supposedly",
+      "may",
+      "might",
+      "could",
+      "would suggest",
+      "seems",
+      "appears"
+    ],
+    "opinion_evaluative": [
+      "best",
+      "worst",
+      "beautiful",
+      "terrible",
+      "amazing",
+      "awful",
+      "outstanding",
+      "disastrous",
+      "brilliant",
+      "appalling",
+      "superior",
+      "inferior",
+      "excellent",
+      "dreadful"
+    ],
+    "opinion_normative": [
+      "should",
+      "must",
+      "ought to",
+      "need to",
+      "has to",
+      "have to",
+      "it is necessary",
+      "it is essential",
+      "it is vital"
+    ],
+    "fact_attribution": [
+      "according to",
+      "as reported by",
+      "studies show",
+      "research indicates",
+      "data reveals",
+      "statistics demonstrate",
+      "the report states",
+      "scientists found",
+      "researchers discovered",
+      "officially"
+    ],
+    "fact_quantitative": [
+      "percent",
+      "%",
+      "million",
+      "billion",
+      "kilometres",
+      "degrees",
+      "square",
+      "per capita",
+      "ratio",
+      "rate"
+    ],
+    "fact_temporal": [
+      "in 19",
+      "in 20",
+      "on january",
+      "on february",
+      "on march",
+      "founded in",
+      "established in",
+      "born in",
+      "died in"
+    ],
+    "first_person": [
+      "i ",
+      "me ",
+      "my ",
+      "mine",
+      "myself",
+      "we ",
+      "us ",
+      "our ",
+      "ours"
+    ]
+  }
+}
