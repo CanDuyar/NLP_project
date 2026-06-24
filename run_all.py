@@ -4,14 +4,14 @@ run_all.py – Run both Stage 1 and Stage 2 pipelines
 
 Usage examples
 --------------
-# Full run on real data (stages share the same dataset)
+# Single labelled CSV; each stage holds out its own 80/20 split internally
 python run_all.py --data data/dataset.csv
 
-# Separate train / test splits
-python run_all.py --train data/train.csv --test data/test.csv
+# Train on the labelled set, predict on the released (unlabelled) validation set
+python run_all.py --train data/dataset.csv --test data/validationset.csv
 
-# Validation data released 18 June (adjust as needed)
-python run_all.py --train data/dataset.csv --test data/validation.csv
+Outputs are written to results/group55_classifications_1.csv (Stage 1) and
+results/group55_classifications_2.csv (Stage 2).
 """
 
 import sys

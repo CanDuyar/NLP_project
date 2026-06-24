@@ -1,13 +1,27 @@
 """
 Knowledge Base for Stage 2 – Fact vs Opinion Classification
 =============================================================
-Provides structured linguistic and pragmatic knowledge used in
-Few-Shot + Chain-of-Thought prompting.
+Structured linguistic and pragmatic knowledge for the Stage 2 classifier.
 
-The KB contains:
-  1. Curated few-shot examples (labelled Fact / Opinion with rationale)
-  2. Linguistic markers and their diagnostic value
-  3. Retrieval utilities for selecting contextually relevant examples
+WHAT THE PIPELINE ACTUALLY USES
+-------------------------------
+The fine-tuned BART-base method (stage2/finetune.py) uses this KB in a
+RAG-style way: `compute_marker_counts` / `marker_feature_string` retrieve which
+linguistic-marker categories fire for a given text from LINGUISTIC_MARKERS (the
+"document store") and prepend a compact "[kb] ..." tag to the model input. The
+model then learns from labelled data how those retrieved signals relate to the
+Fact / Opinion label. This is the only KB code wired into the running pipeline.
+
+AUXILIARY / NOT WIRED INTO THE PIPELINE
+---------------------------------------
+The few-shot example pool (FEW_SHOT_EXAMPLES) and the lexical retrieval helpers
+(`retrieve_examples`, `format_examples_for_prompt`, `get_marker_summary`) are
+provided for *prompting-based* approaches (few-shot / chain-of-thought against
+an instruction-following LLM). Plain BART-base is not instruction-tuned, so the
+current method does not prompt it — these utilities are kept as a reusable
+resource (and serialised to knowledge_base.json) but are NOT invoked by
+stage2_pipeline. Do not describe them as part of the implemented method unless
+you actually wire them in.
 """
 
 import json

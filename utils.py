@@ -45,7 +45,9 @@ def normalise_label(raw: str) -> str:
 
 def load_dataset(path: str) -> pd.DataFrame:
     """Load the project dataset and normalise columns / labels."""
-    df = pd.read_csv(path)
+    # utf-8-sig transparently strips a UTF-8 BOM (present in data/dataset.csv)
+    # so the first column header is not read as "﻿Content".
+    df = pd.read_csv(path, encoding="utf-8-sig")
     df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
 
     # Try to find text and label columns regardless of exact naming

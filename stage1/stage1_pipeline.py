@@ -150,8 +150,11 @@ def _plot_feature_distributions(X_df: pd.DataFrame, y: np.ndarray):
         return
 
     n = len(key_feats)
-    fig, axes = plt.subplots(2, max(n // 2, 1), figsize=(14, 7))
-    axes = axes.flatten()
+    # ceil so an odd number of available features still gets enough subplots
+    # (a 2 x (n//2) grid would be too small and raise IndexError).
+    ncols = max(-(-n // 2), 1)
+    fig, axes = plt.subplots(2, ncols, figsize=(14, 7))
+    axes = np.asarray(axes).flatten()
 
     for i, feat in enumerate(key_feats):
         ax = axes[i]
