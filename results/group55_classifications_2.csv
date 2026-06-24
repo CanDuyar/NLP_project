@@ -3,7 +3,7 @@ id,label
 1,Fact
 2,Fact
 3,Fact
-4,Opinion
+4,Fact
 5,Opinion
 6,Fact
 7,Fact
@@ -31,7 +31,7 @@ id,label
 29,Fact
 30,Opinion
 31,Opinion
-32,Opinion
+32,Fact
 33,Fact
 34,Fact
 35,Opinion
@@ -76,7 +76,7 @@ id,label
 74,Opinion
 75,Opinion
 76,Fact
-77,Fact
+77,Opinion
 78,Opinion
 79,Opinion
 80,Fact
@@ -94,11 +94,11 @@ id,label
 92,Opinion
 93,Fact
 94,Fact
-95,Opinion
+95,Fact
 96,Fact
 97,Fact
 98,Opinion
-99,Fact
+99,Opinion
 100,Fact
 101,Fact
 102,Opinion
@@ -180,7 +180,7 @@ id,label
 178,Opinion
 179,Fact
 180,Opinion
-181,Fact
+181,Opinion
 182,Opinion
 183,Opinion
 184,Opinion
