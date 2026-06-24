@@ -1,0 +1,260 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\graphicspath{{../results/}}
+\captionsetup{font=small,labelfont=bf}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlength{\columnsep}{16pt}
+
+\title{\vspace{-1.4cm}\textbf{Opinion vs.\ Fact Classification:\\
+A Two-Stage NLP Pipeline}}
+\author{Group 55 --- NLP Project 2026}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{-0.6cm}
+
+%======================================================================
+\section{Introduction}
+The task is to decide whether a short piece of text states a fact or expresses
+an opinion. We built two separate pipelines for this, as the brief asks. Stage~1
+sticks to traditional NLP: we hand-craft linguistic features and feed them to
+ordinary machine-learning classifiers, with no transformers involved. Stage~2
+goes the LLM route and fine-tunes BART, with a small linguistic knowledge base
+mixed into the input. Both stages are checked against a baseline and both
+produce predictions for the released validation set
+(\texttt{group55\_classifications\_1.csv} and
+\texttt{group55\_classifications\_2.csv}). We keep the code for the two stages in
+separate folders (\texttt{stage1/} and \texttt{stage2/}), with a shared
+\texttt{utils.py} for loading data, fixing labels and computing metrics.
+
+%======================================================================
+\section{Dataset \& Preprocessing}
+The labelled data (\texttt{data/dataset.csv}) has 855 rows with a
+\texttt{Content} column and a \texttt{Classification} column. The labels came in
+with some inconsistent casing (\texttt{OPinion}, \texttt{fact}, and so on), so we
+normalise everything to \texttt{Fact} or \texttt{Opinion}. After that the split
+is roughly even: 443 Fact (51.8\%) and 412 Opinion (48.2\%), shown in
+Figure~\ref{fig:dist}.
+
+The separate validation set (\texttt{validationset.csv}, 222 texts) has no gold
+labels, so we cannot score anything on it directly. For every number we report
+below we instead use an internal stratified 80/20 split of the labelled data,
+and reserve the validation set purely for generating the submission files. We
+kept preprocessing deliberately minimal (\texttt{utils.clean\_text}): strip HTML
+tags and entities, collapse whitespace, and leave the rest alone, since most of
+the features we use depend on the original wording.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.62\linewidth]{report_dataset_distribution.png}
+\caption{Class balance of the 855-sample training set.}
+\label{fig:dist}
+\end{figure}
+
+%======================================================================
+\section{Stage 1 --- Traditional NLP + Classic ML}
+
+\subsection{Feature engineering}
+We turn each text into 49 numeric features
+(\texttt{stage1/feature\_extractor.py}); Table~\ref{tab:feats} groups them. The
+idea behind the feature set is fairly simple: opinions tend to be subjective,
+hedged, first-person and full of evaluative words, while facts tend to name
+entities, cite sources, give numbers and use reporting verbs. We tried to give
+the classifier a handle on both sides of that.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Group} & \textbf{Example features (library)} \\
+\midrule
+POS ratios & noun/verb/adj/adv/modal/proper-noun ratio (NLTK) \\
+Named entities & PERSON/ORG/GPE counts, NER density (NLTK) \\
+Sentiment & VADER pos/neg/neu/compound, intensity, variance \\
+Readability & Flesch--Kincaid, Gunning-Fog, SMOG, ARI (textstat) \\
+Lexical & type--token ratio, content-word ratio, word length \\
+Opinion/Fact lexicon & curated marker counts + their difference \\
+Epistemic & hedging, first-person, epistemic \& reporting verbs \\
+Surface & exclamation/question/quote, numeric \& citation density \\
+Complexity & subordinating conjunctions, spelling-error ratio \\
+\bottomrule
+\end{tabular}
+\caption{The 49 features grouped by linguistic category.}
+\label{tab:feats}
+\end{table}
+
+\subsection{Models and protocol}
+Every classifier runs inside a pipeline that first imputes missing values with
+the median and then standardises the features
+(\texttt{stage1/classifier.py}). We compare five models with 5-fold stratified
+cross-validation and pick the best one by F1-macro. The baseline is a
+majority-class \texttt{DummyClassifier}; the learned models are Logistic
+Regression, Random Forest (300 trees), Gradient Boosting (200 trees, learning
+rate 0.05, depth 4) and an RBF SVM. We use balanced class weights where the
+model supports it.
+
+\subsection{Results}
+The four learned models all land around F1-macro 0.85 and leave the 0.341
+majority baseline far behind (Table~\ref{tab:s1}, Figure~\ref{fig:s1cmp}). We
+went with Random Forest as the Stage~1 model: it scored highest, if only just,
+and it gives us readable feature importances. Those importances line up with
+what we expected, with hedging ratio, first-person ratio, sentiment intensity,
+the opinion-minus-fact lexicon count and NER density near the top
+(Figure~\ref{fig:s1cmp}, right). The validation predictions go to
+\texttt{group55\_classifications\_1.csv}.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Model} & \textbf{F1-macro (5-fold CV)} \\
+\midrule
+\textbf{Random Forest} (selected) & \textbf{0.853} \\
+SVM (RBF) & 0.852 \\
+Gradient Boosting & 0.850 \\
+Logistic Regression & 0.849 \\
+Majority baseline & 0.341 \\
+\bottomrule
+\end{tabular}
+\caption{Stage 1 cross-validation results.}
+\label{tab:s1}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.49\linewidth]{stage1_model_comparison.png}
+\hfill
+\includegraphics[width=0.49\linewidth]{stage1_RandomForest_feature_importance.png}
+\caption{Stage 1: CV model comparison (left) and top Random-Forest feature
+importances (right).}
+\label{fig:s1cmp}
+\end{figure}
+
+\subsection{What we tried and dropped}
+The other three learned models were genuine candidates, but since they all sat
+within about 0.004 of Random Forest, building a voting ensemble on top of them
+felt like effort for nothing measurable. We also tested Gaussian Naive Bayes and
+a voting classifier early on; neither helped, so they did not make the final
+pipeline.
+
+%======================================================================
+\section{Stage 2 --- LLM-based Classification}
+
+\subsection{Approach: knowledge-base--augmented fine-tuning}
+Our main method fine-tunes \texttt{facebook/bart-base}
+(\texttt{BartForSequenceClassification} with two labels) and prepends a short
+knowledge-base tag to each input (\texttt{stage2/finetune.py},
+\texttt{knowledge\_base/}). The knowledge base defines eight marker categories,
+for example \texttt{opinion\_strong}, \texttt{opinion\_hedge},
+\texttt{fact\_attribution}, \texttt{fact\_quantitative},
+\texttt{fact\_temporal} and \texttt{first\_person}. At inference time
+\texttt{marker\_feature\_string()} scans the text and writes out only the
+categories that actually fire, e.g.:
+\begin{quote}\small\ttfamily
+[kb] opinion\_strong:1 opinion\_hedge:2 \,| In my opinion this might be the best film\dots
+\end{quote}
+So the model sees the raw sentence plus a few explicit hints about the kind of
+language it contains.
+
+Why fine-tune rather than prompt? Zero-shot on its own is not allowed, and our
+baseline below shows it is not good enough here anyway. Fine-tuning pushes BART's
+pretrained representations straight at this particular fact/opinion boundary, and
+the knowledge-base tags act as a cheap prior that helps on a training set this
+small (745 examples) while also making it clear what the model is keying on.
+Training settings: 4 epochs, batch size 8, AdamW at a learning rate of
+$2\!\times\!10^{-5}$, max length 256, with a 10\% linear warmup.
+
+\subsection{Baseline}
+For the baseline we use zero-shot \texttt{facebook/bart-large-mnli}
+(\texttt{stage2/llm\_classifier.py}). It treats each text as an NLI premise and
+scores the two hypotheses ``This statement is a fact'' and ``This statement is an
+opinion'', with no training at all.
+
+\subsection{Results}
+On the internal 20\% hold-out, fine-tuning takes F1-macro from 0.548 (zero-shot)
+up to 0.935, a jump of 0.387 (Table~\ref{tab:s2}, Figure~\ref{fig:s2}). The
+confusion matrices make the difference clear: the baseline keeps calling facts
+opinions, whereas the fine-tuned model is roughly even on both classes. The
+learning curve flattens out after the first epoch, so the four epochs we ran are
+more than enough. The predictions are saved to
+\texttt{group55\_classifications\_2.csv}.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Method} & \textbf{Accuracy} & \textbf{F1-macro} \\
+\midrule
+Zero-shot BART-MNLI (baseline) & 0.567 & 0.548 \\
+\textbf{Fine-tuned BART + KB (main)} & \textbf{0.936} & \textbf{0.935} \\
+\bottomrule
+\end{tabular}
+\caption{Stage 2 results on the internal 20\% validation split.}
+\label{tab:s2}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.40\linewidth]{stage2_comparison.png}
+\hfill
+\includegraphics[width=0.28\linewidth]{stage2_baseline_cm.png}
+\hfill
+\includegraphics[width=0.28\linewidth]{stage2_finetuned_cm.png}
+\caption{Stage 2: baseline vs.\ fine-tuned scores (left) and confusion matrices
+for the zero-shot baseline (centre) and fine-tuned model (right).}
+\label{fig:s2}
+\end{figure}
+
+\subsection{What we tried and dropped}
+We also set up a few-shot prompting version that uses the knowledge base
+directly: 16 hand-written examples with short rationales plus TF-IDF retrieval,
+stored in \texttt{knowledge\_base.json}. In the end we did not use it, because it
+came out weaker than fine-tuning and is a lot slower at inference. Plain zero-shot
+stayed in only as the baseline.
+
+%======================================================================
+\section{Comparison \& Discussion}
+Both stages beat their baselines by a wide margin (Figure~\ref{fig:summary}). The
+fine-tuned LLM (0.935) comes out ahead of the feature-based Random Forest
+(0.853), but it is not a free win: Stage~1 trains in seconds on a CPU and we can
+explain every prediction from its features, whereas Stage~2 needs a 140M-parameter
+model and a GPU to fine-tune. The two scores are also not perfectly comparable,
+since Stage~1 uses 5-fold CV and Stage~2 a single 20\% hold-out, and neither can
+be confirmed on the official set because it has no labels. One thing worth noting
+is that the knowledge base ties the stages together: the same linguistic cues
+drive both the Stage~1 features and the Stage~2 marker tags.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\linewidth]{report_stage_summary.png}
+\caption{F1-macro of each stage's main method and baseline.}
+\label{fig:summary}
+\end{figure}
+
+%======================================================================
+\section{Conclusion}
+We ended up with two clearly separated pipelines, each measured against a
+baseline. Stage~1 reaches 0.853 F1-macro using linguistic features and a Random
+Forest, and stays fully interpretable. Stage~2 reaches 0.935 by fine-tuning BART
+on inputs that carry a small knowledge-base tag, which is a stronger and
+better-justified option than relying on zero-shot prompting. If we had more time
+the obvious next steps would be a proper cross-validation for Stage~2 and a
+closer look at the cases both models still get wrong.
+
+\end{document}
