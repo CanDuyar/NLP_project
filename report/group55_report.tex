@@ -53,9 +53,11 @@ The separate validation set (\texttt{validationset.csv}, 222 texts) has no gold
 labels, so we cannot score anything on it directly. For every number we report
 below we instead use an internal stratified 80/20 split of the labelled data,
 and reserve the validation set purely for generating the submission files. We
-kept preprocessing deliberately minimal (\texttt{utils.clean\_text}): strip HTML
-tags and entities, collapse whitespace, and leave the rest alone, since most of
-the features we use depend on the original wording.
+kept preprocessing deliberately minimal: both stages work on the raw
+\texttt{Content} text. A light-touch cleaner (\texttt{utils.clean\_text}, for
+stripping HTML tags/entities and collapsing whitespace) is available, but we
+leave the wording untouched because most of the Stage~1 features depend on the
+original surface form.
 
 \begin{figure}[H]
 \centering
@@ -166,7 +168,7 @@ for example \texttt{opinion\_strong}, \texttt{opinion\_hedge},
 \texttt{marker\_feature\_string()} scans the text and writes out only the
 categories that actually fire, e.g.:
 \begin{quote}\small\ttfamily
-[kb] opinion\_strong:1 opinion\_hedge:2 \,| In my opinion this might be the best film\dots
+[kb] opinion\_strong:1 opinion\_hedge:2 In my opinion this might be the best film\dots
 \end{quote}
 So the model sees the raw sentence plus a few explicit hints about the kind of
 language it contains.
@@ -175,7 +177,7 @@ Why fine-tune rather than prompt? Zero-shot on its own is not allowed, and our
 baseline below shows it is not good enough here anyway. Fine-tuning pushes BART's
 pretrained representations straight at this particular fact/opinion boundary, and
 the knowledge-base tags act as a cheap prior that helps on a training set this
-small (745 examples) while also making it clear what the model is keying on.
+small (684 examples) while also making it clear what the model is keying on.
 Training settings: 4 epochs, batch size 8, AdamW at a learning rate of
 $2\!\times\!10^{-5}$, max length 256, with a 10\% linear warmup.
 
@@ -237,8 +239,9 @@ explain every prediction from its features, whereas Stage~2 needs a 140M-paramet
 model and a GPU to fine-tune. The two scores are also not perfectly comparable,
 since Stage~1 uses 5-fold CV and Stage~2 a single 20\% hold-out, and neither can
 be confirmed on the official set because it has no labels. One thing worth noting
-is that the knowledge base ties the stages together: the same linguistic cues
-drive both the Stage~1 features and the Stage~2 marker tags.
+is that the two stages lean on overlapping sets of linguistic markers --- hedges,
+evaluative words, attribution phrases --- even though each maintains its own
+lexicon rather than sharing a single one.
 
 \begin{figure}[H]
 \centering
