@@ -107,9 +107,11 @@ def _safe_divide(a, b, default=0.0):
 
 def _count_spelling_errors(words_lower: List[str]) -> int:
     """
-    Count tokens that are purely alphabetic but absent from the NLTK English
-    word list.  Proper nouns and very short words (len <= 2) are excluded to
-    avoid false positives.
+    Count lowercased alphabetic tokens absent from the NLTK English word list.
+    Only very short words (len <= 2) are skipped. Note this is a deliberately
+    crude proxy: proper nouns, recent vocabulary and rare inflections not in the
+    corpus are also counted, so the value behaves as a noisy informality signal
+    rather than a true spell-checker.
     """
     errors = 0
     for w in words_lower:

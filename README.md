@@ -1,6 +1,6 @@
 # NLP Project 2026 – Opinion vs Fact Classification
 
-A two-stage NLP pipeline for classifying sentences as **opinion** or **fact**.
+A two-stage NLP pipeline for classifying texts (multi-sentence paragraphs/articles) as **opinion** or **fact**.
 
 
 ### Install required packages

@@ -3,7 +3,7 @@ id,label
 1,Fact
 2,Fact
 3,Fact
-4,Fact
+4,Opinion
 5,Opinion
 6,Fact
 7,Fact
@@ -31,9 +31,9 @@ id,label
 29,Fact
 30,Opinion
 31,Opinion
-32,Fact
+32,Opinion
 33,Fact
-34,Fact
+34,Opinion
 35,Opinion
 36,Fact
 37,Fact
@@ -49,7 +49,7 @@ id,label
 47,Opinion
 48,Fact
 49,Fact
-50,Fact
+50,Opinion
 51,Fact
 52,Opinion
 53,Fact
@@ -76,7 +76,7 @@ id,label
 74,Opinion
 75,Opinion
 76,Fact
-77,Opinion
+77,Fact
 78,Opinion
 79,Opinion
 80,Fact
@@ -94,11 +94,11 @@ id,label
 92,Opinion
 93,Fact
 94,Fact
-95,Fact
-96,Fact
+95,Opinion
+96,Opinion
 97,Fact
 98,Opinion
-99,Opinion
+99,Fact
 100,Fact
 101,Fact
 102,Opinion
@@ -180,7 +180,7 @@ id,label
 178,Opinion
 179,Fact
 180,Opinion
-181,Opinion
+181,Fact
 182,Opinion
 183,Opinion
 184,Opinion
@@ -206,7 +206,7 @@ id,label
 204,Fact
 205,Fact
 206,Opinion
-207,Fact
+207,Opinion
 208,Fact
 209,Fact
 210,Fact
@@ -218,6 +218,6 @@ id,label
 216,Opinion
 217,Fact
 218,Opinion
-219,Fact
+219,Opinion
 220,Opinion
-221,Fact
+221,Opinion

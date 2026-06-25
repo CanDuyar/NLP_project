@@ -1,8 +1,8 @@
-PWD c:/Users/danie/Documents/26S/NLP/NLP_project/report
+PWD C:/Users/danie/Documents/26S/NLP/NLP_project/report
 INPUT c:/Users/danie/AppData/Roaming/TinyTeX/texmf.cnf
 INPUT c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/web2c/texmf.cnf
 INPUT c:/Users/danie/AppData/Roaming/TinyTeX/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT c:/Users/danie/Documents/26S/NLP/NLP_project/report/group55_report.tex
+INPUT group55_report.tex
 OUTPUT group55_report.log
 INPUT c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 INPUT c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls

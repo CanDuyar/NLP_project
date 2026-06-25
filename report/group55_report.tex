@@ -110,12 +110,14 @@ rate 0.05, depth 4) and an RBF SVM. We use balanced class weights where the
 model supports it.
 
 \subsection{Results}
-The four learned models all land around F1-macro 0.85 and leave the 0.341
+The four learned models all land around F1-macro 0.85--0.86 and leave the 0.341
 majority baseline far behind (Table~\ref{tab:s1}, Figure~\ref{fig:s1cmp}). We
 went with Random Forest as the Stage~1 model: it scored highest, if only just,
 and it gives us readable feature importances. Those importances line up with
-what we expected, with hedging ratio, first-person ratio, sentiment intensity,
-the opinion-minus-fact lexicon count and NER density near the top
+what we expected: the strongest signals are the numeric-token and number-density
+features --- facts tend to cite figures and statistics --- followed by
+content-word ratio, the share of neutral-sentiment text and noun ratio, while
+the opinion-minus-fact lexicon count and hedging ratio contribute further down
 (Figure~\ref{fig:s1cmp}, right). The validation predictions go to
 \texttt{group55\_classifications\_1.csv}.
 
@@ -126,10 +128,10 @@ the opinion-minus-fact lexicon count and NER density near the top
 \toprule
 \textbf{Model} & \textbf{F1-macro (5-fold CV)} \\
 \midrule
-\textbf{Random Forest} (selected) & \textbf{0.853} \\
-SVM (RBF) & 0.852 \\
-Gradient Boosting & 0.850 \\
-Logistic Regression & 0.849 \\
+\textbf{Random Forest} (selected) & \textbf{0.859} \\
+Logistic Regression & 0.857 \\
+SVM (RBF) & 0.853 \\
+Gradient Boosting & 0.852 \\
 Majority baseline & 0.341 \\
 \bottomrule
 \end{tabular}
@@ -149,7 +151,7 @@ importances (right).}
 
 \subsection{What we tried and dropped}
 The other three learned models were genuine candidates, but since they all sat
-within about 0.004 of Random Forest, building a voting ensemble on top of them
+within about 0.007 of Random Forest, building a voting ensemble on top of them
 felt like effort for nothing measurable. We also tested Gaussian Naive Bayes and
 a voting classifier early on; neither helped, so they did not make the final
 pipeline.
@@ -188,8 +190,8 @@ scores the two hypotheses ``This statement is a fact'' and ``This statement is a
 opinion'', with no training at all.
 
 \subsection{Results}
-On the internal 20\% hold-out, fine-tuning takes F1-macro from 0.548 (zero-shot)
-up to 0.935, a jump of 0.387 (Table~\ref{tab:s2}, Figure~\ref{fig:s2}). The
+On the internal 20\% hold-out, fine-tuning takes F1-macro from 0.472 (zero-shot)
+up to 0.965, a jump of 0.493 (Table~\ref{tab:s2}, Figure~\ref{fig:s2}). The
 confusion matrices make the difference clear: the baseline keeps calling facts
 opinions, whereas the fine-tuned model is roughly even on both classes. The
 learning curve flattens out after the first epoch, so the four epochs we ran are
@@ -203,8 +205,8 @@ more than enough. The predictions are saved to
 \toprule
 \textbf{Method} & \textbf{Accuracy} & \textbf{F1-macro} \\
 \midrule
-Zero-shot BART-MNLI (baseline) & 0.567 & 0.548 \\
-\textbf{Fine-tuned BART + KB (main)} & \textbf{0.936} & \textbf{0.935} \\
+Zero-shot BART-MNLI (baseline) & 0.497 & 0.472 \\
+\textbf{Fine-tuned BART + KB (main)} & \textbf{0.965} & \textbf{0.965} \\
 \bottomrule
 \end{tabular}
 \caption{Stage 2 results on the internal 20\% validation split.}
@@ -233,8 +235,8 @@ stayed in only as the baseline.
 %======================================================================
 \section{Comparison \& Discussion}
 Both stages beat their baselines by a wide margin (Figure~\ref{fig:summary}). The
-fine-tuned LLM (0.935) comes out ahead of the feature-based Random Forest
-(0.853), but it is not a free win: Stage~1 trains in seconds on a CPU and we can
+fine-tuned LLM (0.965) comes out ahead of the feature-based Random Forest
+(0.859), but it is not a free win: Stage~1 trains in seconds on a CPU and we can
 explain every prediction from its features, whereas Stage~2 needs a 140M-parameter
 model and a GPU to fine-tune. The two scores are also not perfectly comparable,
 since Stage~1 uses 5-fold CV and Stage~2 a single 20\% hold-out, and neither can
@@ -253,8 +255,8 @@ lexicon rather than sharing a single one.
 %======================================================================
 \section{Conclusion}
 We ended up with two clearly separated pipelines, each measured against a
-baseline. Stage~1 reaches 0.853 F1-macro using linguistic features and a Random
-Forest, and stays fully interpretable. Stage~2 reaches 0.935 by fine-tuning BART
+baseline. Stage~1 reaches 0.859 F1-macro using linguistic features and a Random
+Forest, and stays fully interpretable. Stage~2 reaches 0.965 by fine-tuning BART
 on inputs that carry a small knowledge-base tag, which is a stronger and
 better-justified option than relying on zero-shot prompting. If we had more time
 the obvious next steps would be a proper cross-validation for Stage~2 and a

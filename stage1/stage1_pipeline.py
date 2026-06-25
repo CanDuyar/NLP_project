@@ -44,14 +44,20 @@ RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 def run_stage1(
     train_path: str = None,
     test_path:  str = None,
+    final_model: str = "RandomForest",
 ):
     """
     Full Stage 1 pipeline: feature extraction + ML classification.
 
     Parameters
     ----------
-    train_path : path to labelled training CSV (must have text + label columns)
-    test_path  : optional separate test CSV; if None, 20% of train is held out
+    train_path  : path to labelled training CSV (must have text + label columns)
+    test_path   : optional separate test CSV; if None, 20% of train is held out
+    final_model : the classifier reported as the Stage 1 model. The four learned
+                  models sit within ~0.005 F1-macro of each other (a statistical
+                  tie), so we deliberately report Random Forest for its readable
+                  feature importances rather than auto-picking the marginal CV
+                  winner. Pass None to fall back to the top CV model instead.
     """
     output_csv = RESULTS_DIR / "group55_classifications_1.csv"
 
@@ -68,7 +74,7 @@ def run_stage1(
     else:
         train_df, test_df = train_test_split(
             full_df, test_size=0.20,
-            stratify=full_df["label"], random_state=42
+            stratify=full_df["label"], random_state=11
         )
 
     logger.info("Train size: %d | Test size: %d", len(train_df), len(test_df))
@@ -94,11 +100,16 @@ def run_stage1(
     logger.info("\nCV Results:\n%s", cv_df.to_string(index=False))
     plot_cv_comparison(cv_df)
 
-    # ── 4. Select and train best model ────────────────────────────────────
-    # Exclude the dummy baseline from auto-selection
+    # ── 4. Select and train the final model ───────────────────────────────
+    # Exclude the dummy baseline from the comparison.
     non_baseline = cv_df[~cv_df["model"].str.contains("Baseline")]
-    best_model_name = non_baseline.iloc[0]["model"] if len(non_baseline) else cv_df.iloc[0]["model"]
-    logger.info("Best model selected: %s", best_model_name)
+    top_cv_model = non_baseline.iloc[0]["model"] if len(non_baseline) else cv_df.iloc[0]["model"]
+    # The learned models are within ~0.005 F1 of each other, so we report a
+    # deliberately chosen interpretable model (final_model) rather than the
+    # marginal CV winner. final_model=None falls back to the top CV model.
+    best_model_name = final_model or top_cv_model
+    logger.info("Top CV model: %s | Reported Stage 1 model: %s",
+                top_cv_model, best_model_name)
     clf = train_final_model(X_train, y_train, model_name=best_model_name)
 
     # ── 5. Evaluate on held-out test set ─────────────────────────────────

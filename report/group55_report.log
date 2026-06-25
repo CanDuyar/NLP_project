@@ -1,10 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.16)  25 JUN 2026 17:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.16)  25 JUN 2026 19:40
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/danie/Documents/26S/NLP/NLP_project/report/group55_report.tex
-(c:/Users/danie/Documents/26S/NLP/NLP_project/report/group55_report.tex
+**group55_report.tex
+(./group55_report.tex
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-10-24>
 (c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
@@ -390,36 +389,36 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 <../results/stage1_model_comparison.png, id=83, 578.16pt x 361.35pt>
 File: ../results/stage1_model_comparison.png Graphic file (type png)
 <use ../results/stage1_model_comparison.png>
-Package pdftex.def Info: ../results/stage1_model_comparison.png  used on input line 142.
+Package pdftex.def Info: ../results/stage1_model_comparison.png  used on input line 144.
 (pdftex.def)             Requested size: 242.59084pt x 151.6171pt.
 <../results/stage1_RandomForest_feature_importance.png, id=84, 578.16pt x 433.62pt>
 File: ../results/stage1_RandomForest_feature_importance.png Graphic file (type png)
 <use ../results/stage1_RandomForest_feature_importance.png>
-Package pdftex.def Info: ../results/stage1_RandomForest_feature_importance.png  used on input line 144.
+Package pdftex.def Info: ../results/stage1_RandomForest_feature_importance.png  used on input line 146.
 (pdftex.def)             Requested size: 242.59084pt x 181.9405pt.
 
 
 [2 <../results/stage1_model_comparison.png> <../results/stage1_RandomForest_feature_importance.png>]
-Overfull \hbox (10.93753pt too wide) in paragraph at lines 161--170
+Overfull \hbox (10.93753pt too wide) in paragraph at lines 163--172
 \T1/cmr/m/n/10 Our main method fine-tunes \T1/cmtt/m/n/10 facebook/bart-base \T1/cmr/m/n/10 (\T1/cmtt/m/n/10 BartForSequenceClassification \T1/cmr/m/n/10 with two la-bels) and prepends
  []
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 182.
+(Font)              <7> on input line 184.
 <../results/stage2_comparison.png, id=95, 505.89pt x 361.35pt>
 File: ../results/stage2_comparison.png Graphic file (type png)
 <use ../results/stage2_comparison.png>
-Package pdftex.def Info: ../results/stage2_comparison.png  used on input line 216.
+Package pdftex.def Info: ../results/stage2_comparison.png  used on input line 218.
 (pdftex.def)             Requested size: 198.02809pt x 141.44974pt.
 <../results/stage2_baseline_cm.png, id=96, 361.35pt x 289.08pt>
 File: ../results/stage2_baseline_cm.png Graphic file (type png)
 <use ../results/stage2_baseline_cm.png>
-Package pdftex.def Info: ../results/stage2_baseline_cm.png  used on input line 218.
+Package pdftex.def Info: ../results/stage2_baseline_cm.png  used on input line 220.
 (pdftex.def)             Requested size: 138.62117pt x 110.89694pt.
 <../results/stage2_finetuned_cm.png, id=97, 361.35pt x 289.08pt>
 File: ../results/stage2_finetuned_cm.png Graphic file (type png)
 <use ../results/stage2_finetuned_cm.png>
-Package pdftex.def Info: ../results/stage2_finetuned_cm.png  used on input line 220.
+Package pdftex.def Info: ../results/stage2_finetuned_cm.png  used on input line 222.
 (pdftex.def)             Requested size: 138.62117pt x 110.89694pt.
 
 
@@ -427,7 +426,7 @@ Package pdftex.def Info: ../results/stage2_finetuned_cm.png  used on input line 
 <../results/report_stage_summary.png, id=113, 505.89pt x 289.08pt>
 File: ../results/report_stage_summary.png Graphic file (type png)
 <use ../results/report_stage_summary.png>
-Package pdftex.def Info: ../results/report_stage_summary.png  used on input line 248.
+Package pdftex.def Info: ../results/report_stage_summary.png  used on input line 250.
 (pdftex.def)             Requested size: 356.4566pt x 203.69115pt.
 
 
@@ -440,15 +439,15 @@ Package rerunfilecheck Info: File `group55_report.out' has not changed.
 (rerunfilecheck)             Checksum: 3794B38C3FF7D5B641D3B33D0BA164AC;2298.
  ) 
 Here is how much of TeX's memory you used:
- 11009 strings out of 469685
- 178528 string characters out of 5474310
+ 11008 strings out of 469685
+ 178374 string characters out of 5474310
  596788 words of memory out of 5000000
  39321 multiletter control sequences out of 15000+600000
  638927 words of font info for 63 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 75i,8n,79p,402b,465s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,350b,465s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/cm-super/sfbx0900.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/cm-super/sftt0900.pfb><c:/Users/danie/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on group55_report.pdf (4 pages, 484545 bytes).
+Output written on group55_report.pdf (4 pages, 484426 bytes).
 PDF statistics:
  184 PDF objects out of 1000 (max. 8388607)
  136 compressed objects within 2 object streams

@@ -143,7 +143,7 @@ def run_stage2(train_path: str = None, test_path: str = None, epochs: int = 4):
         )
 
     train_df, eval_df = train_test_split(
-        full_df, test_size=0.20, stratify=full_df["label"], random_state=42
+        full_df, test_size=0.20, stratify=full_df["label"], random_state=11
     )
     logger.info("Stage 2 internal split - train: %d, eval: %d", len(train_df), len(eval_df))
 

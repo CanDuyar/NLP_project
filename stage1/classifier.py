@@ -58,13 +58,11 @@ def make_preprocessor():
 
 def get_classifiers():
     """Return a dict {name: sklearn_estimator} of candidate classifiers."""
-    pre = make_preprocessor()
-
     return {
         # Baseline (always predicts the majority class)
         "Baseline_Majority": Pipeline([
             ("pre", make_preprocessor()),
-            ("clf", DummyClassifier(strategy="most_frequent", random_state=42)),
+            ("clf", DummyClassifier(strategy="most_frequent", random_state=11)),
         ]),
 
         # Logistic Regression
@@ -72,7 +70,7 @@ def get_classifiers():
             ("pre", make_preprocessor()),
             ("clf", LogisticRegression(
                 max_iter=1000, C=1.0,
-                class_weight="balanced", random_state=42
+                class_weight="balanced", random_state=11
             )),
         ]),
 
@@ -81,7 +79,7 @@ def get_classifiers():
             ("pre", make_preprocessor()),
             ("clf", RandomForestClassifier(
                 n_estimators=300, max_depth=None,
-                class_weight="balanced", random_state=42, n_jobs=-1
+                class_weight="balanced", random_state=11, n_jobs=-1
             )),
         ]),
 
@@ -90,7 +88,7 @@ def get_classifiers():
             ("pre", make_preprocessor()),
             ("clf", GradientBoostingClassifier(
                 n_estimators=200, learning_rate=0.05,
-                max_depth=4, random_state=42
+                max_depth=4, random_state=11
             )),
         ]),
 
@@ -99,7 +97,7 @@ def get_classifiers():
             ("pre", make_preprocessor()),
             ("clf", SVC(
                 kernel="rbf", C=1.0, gamma="scale",
-                class_weight="balanced", probability=True, random_state=42
+                class_weight="balanced", probability=True, random_state=11
             )),
         ]),
     }
@@ -111,7 +109,7 @@ def compare_classifiers(X: np.ndarray, y: np.ndarray,
                          cv: int = 5) -> pd.DataFrame:
     """Run stratified k-fold CV for every classifier, return summary DataFrame."""
     clfs = get_classifiers()
-    cv_obj = StratifiedKFold(n_splits=cv, shuffle=True, random_state=42)
+    cv_obj = StratifiedKFold(n_splits=cv, shuffle=True, random_state=11)
     records = []
 
     for name, clf in clfs.items():

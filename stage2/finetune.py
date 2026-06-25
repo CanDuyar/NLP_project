@@ -29,6 +29,7 @@ from transformers import (
     BartForSequenceClassification,
     BartTokenizerFast,
     get_linear_schedule_with_warmup,
+    set_seed,
 )
 from sklearn.metrics import accuracy_score, f1_score
 
@@ -81,6 +82,7 @@ def train_bart_classifier(
     max_length: int = 256,
     model_id: str = MODEL_ID,
     device: Optional[str] = None,
+    seed: int = 11,
 ) -> Tuple[BartForSequenceClassification, BartTokenizerFast, Dict[str, list]]:
     """
     Fine-tune facebook/bart-base as a 2-way Fact/Opinion classifier.
@@ -89,6 +91,8 @@ def train_bart_classifier(
     per-epoch train loss and validation accuracy/F1 (used for the learning
     curve plot in the pipeline).
     """
+    # Seed torch / numpy / CUDA so a re-run reproduces the reported numbers.
+    set_seed(seed)
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
     logger.info("Fine-tuning %s on device: %s", model_id, device)
 

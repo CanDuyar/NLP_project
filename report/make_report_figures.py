@@ -54,9 +54,9 @@ def stage_summary():
     # Stage 2: internal 20% held-out validation split (stage2_comparison.png).
     models = [
         ("Majority\nbaseline\n(S1)", 0.341, "#dd8452"),
-        ("Random Forest\n(S1 main)", 0.853, "#4c72b0"),
-        ("Zero-shot MNLI\nbaseline (S2)", 0.548, "#dd8452"),
-        ("Fine-tuned BART\n(S2 main)", 0.935, "#4c72b0"),
+        ("Random Forest\n(S1 main)", 0.859, "#4c72b0"),
+        ("Zero-shot MNLI\nbaseline (S2)", 0.472, "#dd8452"),
+        ("Fine-tuned BART\n(S2 main)", 0.965, "#4c72b0"),
     ]
     names = [m[0] for m in models]
     vals = [m[1] for m in models]
